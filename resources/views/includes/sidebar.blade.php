@@ -19,56 +19,40 @@
                 <nav role="navigation" class="widget-body">
                     <ul class="acc-menu">
                         <li class="nav-separator"><span>Main Menu</span></li>
-                        {{--<li><a href="{{route('academic.year.index')}}"><i class="ti ti-pie-chart"></i><span>Dashboard</span></a></li>--}}
-                        {{--<li><a href="{{route('academic.year.index')}}"><i class="ti ti-pie-chart"></i><span>Academic Year</span></a></li>--}}
-                        {{--<li><a href="{{route('academic.term.index')}}"><i class="ti ti-pie-chart"></i><span>Academic Term</span></a></li>--}}
-                        {{--<li><a href="{{route('member.index')}}"><i class="fa fa-user"></i><span>Members</span></a></li>--}}
-                        {{--<li><a href="{{route('org.index')}}"><i class="fa fa-user"></i><span>Organisations</span></a></li>--}}
-                        {{--<li><a href="{{route('bc.index')}}"><i class="fa fa-user"></i><span>Bible Class</span></a></li>--}}
-
-
-
-                        <li><a href="javascript:;"><i class="fa fa-gear"></i><span>Bill Management</span></a>
+                        @permission('see_user')
+                        <li><a href="javascript:;"><i class="fa fa-gear"></i><span>User Management</span></a>
                             <ul class="acc-menu">
-                                <li><a href="{{route('bill.type.index')}}">Bill Type</a></li>
-                                <li><a href="{{route('bill.index')}}">Bill Templates</a></li>
-                                <li><a href="{{route('bill.item.create')}}">Bill Templates Items</a></li>
+
+                                <li><a href="{{route('users.index')}}">Users</a></li>
+                                <li><a href="{{route('users.supervisor.index')}}">Supervisor</a></li>
+                                <li><a href="{{route('users.student.index')}}">Student</a></li>
 
                             </ul>
                         </li>
-
-                        <li><a href="javascript:;"><i class="fa fa-group"></i><span>Student Management</span></a>
+                        @endpermission
+                        @permission('see_user')
+                        <li><a href="javascript:;"><i class="fa fa-gear"></i><span>Project Management</span></a>
                             <ul class="acc-menu">
-                                <li><a href="{{route('student.index')}}">View Students</a></li>
-                                <li><a href="{{route('student.create')}}"><span>Add Student</span></a></li>
-                                <li><a href="{{route('bill.student.index')}}">View Billed Students</a></li>
-                                <li><a href="{{route('bill.student.create')}}">Bill Students</a></li>
-                                <li><a href="{{route('subject.index')}}">Class Enrollment</a></li>
+
+                                {{--<li><a href="{{route('users.index')}}">Users</a></li>--}}
+                                {{--<li><a href="{{route('users.index')}}">Supervisor</a></li>--}}
+                                {{--<li><a href="{{route('users.index')}}">Student</a></li>--}}
 
                             </ul>
                         </li>
-
-                        <li><a href="javascript:;"><i class="fa fa-gear"></i><span>Subject Management</span></a>
-                            <ul class="acc-menu">
-
-                                <li><a href="{{route('subject.index')}}">Subject</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="javascript:;"><i class="fa fa-gear"></i><span>Class Management</span></a>
-                            <ul class="acc-menu">
-                                <li><a href="{{route('class.index')}}">Class</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="javascript:;"><i class="fa fa-gear"></i><span>Academic Settings</span></a>
-                            <ul class="acc-menu">
-                                <li><a href="{{route('academic.year.index')}}">Academic Year</a></li>
-                                <li><a href="{{route('academic.term.index')}}"><span>Term</span></a></li>
-                            </ul>
-                        </li>
+                        @endpermission
                         <li><a href="javascript:;"><i class="fa fa-gear"></i><span>System Settings</span></a>
                             <ul class="acc-menu">
-                                <li><a href="{{route('school.index')}}">School Details</a></li>
-                                <li><a href="{{route('users.index')}}">Users</a></li>
+                                @permission('see_roles')
+                                <li><a href="{{route('role.index')}}">Roles</a></li>
+                                @endpermission
+                                @role('developer')
+                                <li><a href="{{route('permission.index')}}">Permissions</a></li>
+                                @endrole
+                                @permission('see_department')
+                                <li><a href="{{route('department.index')}}">Departments</a></li>
+                                @endpermission
+
 
                             </ul>
                         </li>

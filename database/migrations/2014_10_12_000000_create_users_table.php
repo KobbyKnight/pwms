@@ -16,6 +16,8 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('gender');
+            $table->date('dob');
             $table->string('username', 50)->unique();
             $table->string('email',70)->unique();
             $table->string('official_phone', 20)->nullable();
@@ -24,10 +26,14 @@ class CreateUsersTable extends Migration
             $table->boolean('is_locked')->default(false);
             // if user is logged in it will be 1
             $table->boolean('is_login')->default(false);
-            $table->string('user_ip');
+            $table->string('user_ip')->nullable();
+
+            $table->string('department_id')->nullable();
+            $table->string('school_id')->nullable();
             //who created the user
             $table->string('created_by', 50)->nullable()->index();
             $table->integer('password_attempt_count')->unsigned()->nullable();
+            $table->dateTime('password_attempt_date')->nullable();
             $table->boolean('must_change_password')->default(false);
             $table->rememberToken();
             $table->timestamps();
