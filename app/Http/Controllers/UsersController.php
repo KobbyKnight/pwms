@@ -121,9 +121,9 @@ $user->attachRole($request->input('role'));
                 'name' => 'required',
                 'gender' => 'required',
                 'dob' => 'required',
-                'username' => 'required|unique:users',
-                'email' => 'required|email|unique:users',
-                'password' => 'required|confirmed',
+                'username' => 'required',
+                'email' => 'required|email',
+                'password' => 'sometimes|confirmed',
                 'official_phone' => 'required',
                 'department_id' => 'sometimes',
                 'role' => 'required',
@@ -133,9 +133,9 @@ $user->attachRole($request->input('role'));
                 'name' => 'required',
                 'gender' => 'required',
                 'dob' => 'required',
-                'username' => 'required|unique:users',
-                'email' => 'required|email|unique:users',
-                'password' => 'required|confirmed',
+                'username' => 'required',
+                'email' => 'required|email',
+                'password' => 'sometimes|confirmed',
                 'official_phone' => 'required',
                 'department_id' => 'required',
                 'role' => 'required',
@@ -186,6 +186,70 @@ $user->attachRole($request->input('role'));
             $users = User::all();
         }else{
             $users = User::all();
+        }
+
+        return DataTables::of($users)->addColumn('action', function ($data) {
+            return '<a href="' . route('users.edit', $data->id) . '" class="btn btn-info btn-sm"><i class="ti ti-pencil"></i></a> ' .
+                '<a href="' . route('users.delete', $data->id) . '" class="btn btn-danger btn-sm"><i class="ti ti-trash"></i></a>';
+        })->editColumn('is_locked',function($data){
+            if ($data->is_locked){
+                return '<span class="label label-danger"><i class="ti ti-lock"></i> </span>';
+            }else{
+                return '<span class="label label-success"><i class="ti ti-unlock"></i></span>';
+            }
+        })->editColumn('is_login',function($data){
+            if ($data->is_login){
+                return '<span class="label label-success">on </span>';
+            }else{
+                return '<span class="label label-danger">off</span>';
+            }
+        })->editColumn('department_id',function($data){
+            if (!empty($data->department)){
+                return $data->department->description;
+            }else{
+                return "Null";
+            }
+        })->rawColumns(['action','is_locked','is_login','on_shift','hospital_id','department_id'])->toJson();
+    }
+    public function showsupervisor()
+    {
+        $user=auth()->user();
+        if ($user->hasRole('developer')){
+            $users =User::whereHas('roles', function($q){$q->whereIn('name', ['supervisor']);})->get();
+        }else{
+            $users = User::whereHas('roles', function($q){$q->whereIn('name', ['supervisor']);})->get();
+        }
+
+        return DataTables::of($users)->addColumn('action', function ($data) {
+            return '<a href="' . route('users.edit', $data->id) . '" class="btn btn-info btn-sm"><i class="ti ti-pencil"></i></a> ' .
+                '<a href="' . route('users.delete', $data->id) . '" class="btn btn-danger btn-sm"><i class="ti ti-trash"></i></a>';
+        })->editColumn('is_locked',function($data){
+            if ($data->is_locked){
+                return '<span class="label label-danger"><i class="ti ti-lock"></i> </span>';
+            }else{
+                return '<span class="label label-success"><i class="ti ti-unlock"></i></span>';
+            }
+        })->editColumn('is_login',function($data){
+            if ($data->is_login){
+                return '<span class="label label-success">on </span>';
+            }else{
+                return '<span class="label label-danger">off</span>';
+            }
+        })->editColumn('department_id',function($data){
+            if (!empty($data->department)){
+                return $data->department->description;
+            }else{
+                return "Null";
+            }
+        })->rawColumns(['action','is_locked','is_login','on_shift','hospital_id','department_id'])->toJson();
+    }
+    public function showstudent()
+    {
+        $user=auth()->user();
+        if ($user->hasRole('developer')){
+            $users = User::whereHas('roles', function($q){$q->whereIn('name', ['student']);})->get();
+        }else{
+            $users = User::whereHas('roles', function($q){$q->whereIn('name', ['student']);})->get();
         }
 
         return DataTables::of($users)->addColumn('action', function ($data) {
